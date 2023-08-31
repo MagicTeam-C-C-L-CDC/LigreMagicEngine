@@ -1,0 +1,15 @@
+{
+	"required": true,
+	"package": "ru.ligremagic.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"mixins": [
+		"ServerSchedulerMixin"
+	],
+	"client": [
+		"ClientPlayerEntityMixin",
+      "ItemUseAnimatorMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
