@@ -1,7 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "magic:item/magic_book",
-    "particle": "magic:item/magic_book"
-  }
-}
