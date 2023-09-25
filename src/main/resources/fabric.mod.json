@@ -1,31 +1,33 @@
 {
 	"schemaVersion": 1,
-	"id": "ligremagic",
+	"id": "lme",
 	"version": "${version}",
-	"name": "LigreMagic",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"name": "LigreMagicEngine",
+	"description": "Magic mod in a new way",
 	"authors": [
-		"Me!"
+		"LittleLigr",
+		"Conte di Cagliostro",
+		"CokuTau",
+		"Coca Colaa"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://fabricmc.net/"
 	},
 	"license": "CC0-1.0",
-	"icon": "assets/custom-magic/icon.png",
+	"icon": "assets/LME/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"ru.ligremagic.LigreMagic"
+          "ru.littleligr.magic.engine.LigreMagicEngine"
 		],
 		"client": [
-			"ru.ligremagic.LigreMagicClient"
+          "ru.littleligr.magic.engine.LigreMagicClient"
 		]
 	},
 	"mixins": [
-		"ligremagic.mixins.json",
+		"littleligr.magic.engine.mixins.json",
 		{
-			"config": "ligremagic.client.mixins.json",
+			"config": "littleligr.magic.engine.client.mixins.json",
 			"environment": "client"
 		}
 	],
@@ -34,7 +36,7 @@
 		"minecraft": "~1.20.1",
 		"java": ">=17",
 		"fabric-api": "*",
-		"dynamichud": ">=1.1.1"
+		"dynamichud": ">=1.2.0"
 	},
 	"suggests": {
 		"another-mod": "*"

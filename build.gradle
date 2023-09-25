@@ -23,9 +23,9 @@ loom {
     splitEnvironmentSourceSets()
 
 	mods {
-		"ligremagic" {
+		"ligre_magic_engine" {
 			sourceSet sourceSets.main
-			//sourceSet sourceSets.client
+			sourceSet sourceSets.client
 		}
 	}
 
