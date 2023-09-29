@@ -1,17 +1,18 @@
 package ru.littleligr.magic.engine.spell;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.Text;
 import ru.littleligr.magic.engine.LigreMagicEngine;
 import ru.littleligr.magic.engine.network.UpdateManaLevelPacket;
-import ru.littleligr.magic.engine.network.UpdateSelectedMagicDeliveryPacket;
-import ru.littleligr.magic.engine.spell.cast.form.*;
+import ru.littleligr.magic.engine.network.UpdateSelectedMagicFormPacket;
 import ru.littleligr.magic.engine.spell.common.SpellScriptContainer;
+import ru.littleligr.magic.engine.spell.form.*;
 
 public class PlayerMagicData {
 
     private final PlayerEntity player;
     private SpellCastProvider spellProvider;
-    private float manaTarget = 400;
+    private final float manaTarget = 400;
     private float currentMana = 340;
     private int delivery = 1;
     float absorbPower = 4;
@@ -22,8 +23,8 @@ public class PlayerMagicData {
         this.player = player;
     }
 
-    public SpellScript getSpellScript() {
-        SpellScript scriptContainer = null;
+    public Spell getSpellScript() {
+        Spell scriptContainer = null;
         if (player.getMainHandStack() != null && player.getMainHandStack().getItem() instanceof SpellScriptContainer)
             scriptContainer = ((SpellScriptContainer) player.getMainHandStack().getItem()).getSpellScript();
         else if (player.getOffHandStack() != null && player.getOffHandStack().getItem() instanceof SpellScriptContainer)
@@ -47,19 +48,19 @@ public class PlayerMagicData {
     public void selectDelivery(int id) {
         this.delivery = id;
         if (player.getWorld().isClient)
-            LigreMagicEngine.OWO_NET_CHANNEL.clientHandle().send(new UpdateSelectedMagicDeliveryPacket(id));
+            LigreMagicEngine.OWO_NET_CHANNEL.clientHandle().send(new UpdateSelectedMagicFormPacket(id));
     }
 
     public int getSelectedDelivery() {
         return delivery;
     }
 
-    public SpellDelivery getDelivery() {
+    public SpellForm getDelivery() {
         return switch (delivery) {
-            case 1 -> new DeliveryFlow(32);
-            case 2 -> new DeliveryTarget(32);
-            case 3 -> new DeliveryProjectile();
-            case 4 -> new DeliverySelf();
+            case 1 -> new FormFlow(32);
+            case 2 -> new FormTarget(32);
+            case 3 -> new FormProjectile();
+            case 4 -> new FormSelf();
             default -> throw new IllegalArgumentException();
         };
     }
@@ -85,18 +86,16 @@ public class PlayerMagicData {
         float target = Math.min(drainPower, manaTarget);
         float drainedMana = Math.min(currentMana, target);
         currentMana -= drainedMana;
+        player.sendMessage(Text.literal("Current mana: " + currentMana));
         return drainedMana;
     }
 
     public void cast() {
-
-        LigreMagicEngine.LOGGER.warn("CAST: " + String.join(", ", "" + spellProvider, "" + castBlock));
-
-        SpellScript spellScript = getSpellScript();
+        Spell spellScript = getSpellScript();
         if (spellScript == null || castBlock) return;
 
         if (spellProvider == null)
-            spellProvider = spellScript.createSpellCastProvider(getDelivery(), player);
+            spellProvider = new SpellCastProvider(player, getDelivery(), spellScript, 14);
 
         if (spellProvider.isManaEnough(getAvailableMana()))
             spellProvider.consume(drainMana(spellProvider.manaTarget()));

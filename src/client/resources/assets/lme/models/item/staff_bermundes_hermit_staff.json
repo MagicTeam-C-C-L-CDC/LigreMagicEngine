@@ -1,7 +1,7 @@
 {
 	"__comment": "Designed by Zoombaz with Cubik Studio - https://cubik.studio",
 	"textures": {
-		"staff_bermundes_hermit_staff": "ligremagic:item/staff/staff_bermundes_hermit_staff"
+		"staff_bermundes_hermit_staff": "lme:item/staff/staff_bermundes_hermit_staff"
 	},
 	"elements": [ 	 
 		{

@@ -1,12 +1,12 @@
 package ru.littleligr.magic.engine.spell.common;
 
-import ru.littleligr.magic.engine.spell.SpellScript;
+import ru.littleligr.magic.engine.spell.Spell;
 
 public interface SpellScriptContainer {
 
-    SpellScript selectSpell(int id);
+    Spell selectSpell(int id);
 
-    SpellScript getSpellScript();
+    Spell getSpellScript();
 
     int spellCapacity();
 }

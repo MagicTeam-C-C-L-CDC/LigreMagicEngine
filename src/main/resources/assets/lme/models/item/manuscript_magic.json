@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "ligremagic:item/manuscript_magic",
-    "particle": "ligremagic:item/manuscript_magic"
+    "layer0": "lme:item/manuscript_magic",
+    "particle": "lme:item/manuscript_magic"
   }
 }

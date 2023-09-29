@@ -25,8 +25,8 @@ public class ItemInit implements ItemRegistryContainer {
     @Override
     public void postProcessField(String namespace, Item value, String identifier, Field field) {
         ItemRegistryContainer.super.postProcessField(namespace, value, identifier, field);
-        if (!identifier.equals("manuscript_magic"))
-            ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(content -> content.add(value));
+        //if (!identifier.equals("manuscript_magic"))
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(content -> content.add(value));
 
 
     }
