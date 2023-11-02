@@ -11,8 +11,6 @@ public abstract class Adapter<T extends AdapterData> implements AdapterCallback<
     public Type getAdapterDataClass() {
         ParameterizedType superclass =
                 (ParameterizedType) getClass().getGenericSuperclass();
-
-        LigreMagicEngine.LOGGER.info("GENERIS " + superclass.getActualTypeArguments()[0]);
         return superclass.getActualTypeArguments()[0];
     }
 }

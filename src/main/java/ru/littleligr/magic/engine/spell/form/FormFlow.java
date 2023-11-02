@@ -1,10 +1,10 @@
 package ru.littleligr.magic.engine.spell.form;
 
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import ru.littleligr.magic.engine.LigreMagicEngine;
 import ru.littleligr.magic.engine.spell.common.SpellCallback;
 import ru.littleligr.magic.engine.spell.common.SpellLock;
+import ru.littleligr.magic.engine.spell.common.WizardInfo;
 import ru.littleligr.magic.engine.utils.RaycastUtil;
 
 public class FormFlow implements SpellLock, SpellForm {
@@ -17,7 +17,7 @@ public class FormFlow implements SpellLock, SpellForm {
     }
 
     @Override
-    public void call(PlayerEntity spellOwner, SpellCallback callback) {
+    public void call(WizardInfo spellOwner, SpellCallback callback) {
         RaycastUtil.raycast(spellOwner, range, callback);
     }
 }

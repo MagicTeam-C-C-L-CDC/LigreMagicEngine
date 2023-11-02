@@ -6,6 +6,8 @@ import ru.littleligr.magic.engine.LigreMagicEngine;
 
 @Config(name = LigreMagicEngine.MOD_ID, wrapperName = "LigreMagicEngineConfig")
 public class LigreMagicEngineConfigModel {
+    public float basePlayerManaCapacity = 200;
+    public float basePlayerManaAbsorb = 1f;
     @Nest
     public Spell spells = new Spell();
 

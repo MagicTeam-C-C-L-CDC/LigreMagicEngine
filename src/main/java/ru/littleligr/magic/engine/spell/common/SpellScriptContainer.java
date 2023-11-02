@@ -1,12 +1,20 @@
 package ru.littleligr.magic.engine.spell.common;
 
-import ru.littleligr.magic.engine.spell.Spell;
+import dev.onyxstudios.cca.api.v3.component.Component;
+import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
+import ru.littleligr.magic.engine.storage.info.SpellInfo;
 
-public interface SpellScriptContainer {
+import java.util.List;
 
-    Spell selectSpell(int id);
+public interface SpellScriptContainer extends Component, AutoSyncedComponent {
 
-    Spell getSpellScript();
+    void selectSpell(int id);
+
+    SpellInfo getSpellInfo();
+
+    int selectedId();
+
+    List<SpellInfo> getSpells();
 
     int spellCapacity();
 }

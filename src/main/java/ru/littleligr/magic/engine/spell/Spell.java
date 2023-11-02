@@ -1,33 +1,33 @@
 package ru.littleligr.magic.engine.spell;
 
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import ru.littleligr.magic.engine.LigreMagicEngine;
-import ru.littleligr.magic.engine.adapter.AdapterData;
 import ru.littleligr.magic.engine.spell.common.EffectData;
+import ru.littleligr.magic.engine.spell.common.WizardInfo;
 import ru.littleligr.magic.engine.spell.target.Target;
-import ru.littleligr.magic.engine.storage.Adapters;
-import ru.littleligr.magic.engine.storage.Effects;
+import ru.littleligr.magic.engine.utils.StagedList;
 
 import java.util.List;
 
 public class Spell {
+
+    public final Identifier texture;
     public final float cost;
+    private final List<EffectData> effects;
+    private final StagedList components;
+    private final StagedList rules;
 
-    private List<EffectData> effects;
-    private List<AdapterData> sounds;
-    private List<AdapterData> visuals;
-    private List<AdapterData> rules;
-
-    public Spell(float cost) {
+    public Spell(Identifier texture, float cost, List<EffectData> effects, StagedList components, StagedList rules) {
+        this.texture = texture;
         this.cost = cost;
+        this.effects = effects;
+        this.components = components;
+        this.rules = rules;
     }
 
-    public <E, T extends Target<E>> void onStage(PlayerEntity spellOwner, Identifier stage, T target) {
-        LigreMagicEngine.LOGGER.info(spellOwner + " " + stage + " " + target.target.toString());
-        effects.stream().filter(ed -> ed.stage.equals(stage)).forEach(effect -> Effects.tryAcceptHandler(effect.effect, spellOwner, target));
-        sounds.stream().filter(sd -> sd.stage.equals(stage)).forEach(sd -> Adapters.tryAcceptHandler(sd.adapter, spellOwner, target, sd));
-        visuals.stream().filter(sd -> sd.stage.equals(stage)).forEach(sd -> Adapters.tryAcceptHandler(sd.adapter, spellOwner, target, sd));
+    public <E, T extends Target<E>> void onStage(WizardInfo spellOwner, Identifier stage, T target) {
+        LigreMagicEngine.EFFECTS.accept(effects.stream().filter(effectData -> effectData.stage.equals(stage)), spellOwner, target);
+        LigreMagicEngine.ADAPTERS.accept(components.filter(stage), spellOwner, target);
     }
 
     @Override
@@ -35,8 +35,7 @@ public class Spell {
         return "Spell{" +
                 "cost=" + cost +
                 ", effects=" + effects +
-                ", sounds=" + sounds +
-                ", visuals=" + visuals +
+                ", components=" + components +
                 ", rules=" + rules +
                 '}';
     }

@@ -21,24 +21,29 @@
           "ru.littleligr.magic.engine.LigreMagicEngine"
 		],
 		"client": [
-          "ru.littleligr.magic.engine.LigreMagicClient"
+			"ru.littleligr.magic.engine.LigreMagicEngineClient"
+		],
+		"cardinal-components": [
+			"ru.littleligr.magic.engine.config.Components"
 		]
 	},
 	"mixins": [
-		"littleligr.magic.engine.mixins.json",
-		{
-			"config": "littleligr.magic.engine.client.mixins.json",
-			"environment": "client"
-		}
+		"littleligr.magic.engine.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.14.22",
 		"minecraft": "~1.20.1",
 		"java": ">=17",
-		"fabric-api": "*",
-		"dynamichud": ">=1.2.0"
+		"fabric-api": "*"
 	},
 	"suggests": {
 		"another-mod": "*"
+	},
+	"custom": {
+		"cardinal-components": [
+			"lme:mana_component",
+			"lme:magic_data_component",
+			"lme:spell_script_container_component"
+		]
 	}
 }

@@ -1,15 +1,15 @@
 package ru.littleligr.magic.engine.spell;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import ru.littleligr.magic.engine.spell.common.SpellCallback;
 import ru.littleligr.magic.engine.spell.common.SpellLock;
+import ru.littleligr.magic.engine.spell.common.WizardInfo;
 import ru.littleligr.magic.engine.spell.form.SpellForm;
 import ru.littleligr.magic.engine.spell.target.LivingEntityTarget;
 import ru.littleligr.magic.engine.spell.target.Target;
+import ru.littleligr.magic.engine.storage.info.FormInfo;
 
 public class SpellCastProvider implements SpellCallback{
-    PlayerEntity spellOwner;
+    WizardInfo spellOwner;
     Spell spell;
     SpellForm form;
     private float accumulatedMana = 0;
@@ -17,11 +17,13 @@ public class SpellCastProvider implements SpellCallback{
     private final float manaGoal;
     private Status status = Status.CHARGE;
 
-    public SpellCastProvider(PlayerEntity spellOwner, SpellForm form, Spell spell, float manaGoal) {
-        this.form = form;
+    public boolean castBlock = false;
+
+    public SpellCastProvider(WizardInfo spellOwner, FormInfo formInfo, Spell spell) {
+        this.form = formInfo.form();
         this.spell = spell;
-        this.manaGoal = manaGoal;
         this.spellOwner = spellOwner;
+        this.manaGoal = spell.cost + formInfo.formData().cost;
     }
 
     public boolean isManaReady() {
@@ -45,14 +47,14 @@ public class SpellCastProvider implements SpellCallback{
         consumeCounter++;
 
         if (consumeCounter == 1)
-            spell.onStage(spellOwner, SpellStage.CAST.identifier, new LivingEntityTarget(spellOwner));
+            spell.onStage(spellOwner, SpellStage.CAST.identifier, new LivingEntityTarget(spellOwner.player()));
 
         accumulatedMana += mana;
         if (isManaReady()) {
             form.call(spellOwner, this);
             if (!(form instanceof SpellLock)) {
                 status = Status.READY;
-                spell.onStage(spellOwner, SpellStage.RELEASE.identifier, new LivingEntityTarget(spellOwner));
+                spell.onStage(spellOwner, SpellStage.RELEASE.identifier, new LivingEntityTarget(spellOwner.player()));
             }
         }
     }
@@ -64,6 +66,19 @@ public class SpellCastProvider implements SpellCallback{
     @Override
     public <E, T extends Target<E>> void call(T target) {
         spell.onStage(spellOwner, SpellStage.TARGET.identifier, target);
+    }
+
+    @Override
+    public String toString() {
+        return "SpellCastProvider{" +
+                "spellOwner=" + spellOwner +
+                ", spell=" + spell +
+                ", form=" + form +
+                ", accumulatedMana=" + accumulatedMana +
+                ", consumeCounter=" + consumeCounter +
+                ", manaGoal=" + manaGoal +
+                ", status=" + status +
+                '}';
     }
 
     public enum Status {
